@@ -1,10 +1,10 @@
 package main
 
 import (
-    _ "github.com/go-sql-driver/mysql"
-		"net/http"
-		"encoding/json"
-		"io/ioutil"
+  _ "github.com/go-sql-driver/mysql"
+	"net/http"
+	"encoding/json"
+	"io/ioutil"
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request){
