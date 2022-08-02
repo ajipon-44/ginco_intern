@@ -7,7 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func GetUsers(w http.ResponseWriter, _ *http.Request){
+func GetUsers(w http.ResponseWriter, _ *http.Request) {
 	db := ConnectDb()
 	defer db.Close()
 
