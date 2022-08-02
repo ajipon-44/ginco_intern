@@ -1,10 +1,11 @@
 package main
 
 import (
-    _ "github.com/go-sql-driver/mysql"
-		"net/http"
-		"github.com/gorilla/mux"
-		"log"
+	"log"
+	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 )
 
 type User struct {

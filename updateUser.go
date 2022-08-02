@@ -1,10 +1,11 @@
 package main
 
 import (
-    _ "github.com/go-sql-driver/mysql"
-		"net/http"
-		"encoding/json"
-		"io/ioutil"
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func UpdateUser(w http.ResponseWriter, r *http.Request){
