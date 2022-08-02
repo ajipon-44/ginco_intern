@@ -15,6 +15,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
 	body, err_body := ioutil.ReadAll(r.Body)
 
 	defer r.Body.Close()
+
   if err_body != nil {
 		panic(err_body)
 	}
