@@ -1,12 +1,13 @@
 package main
 
 import (
-    _ "github.com/go-sql-driver/mysql"
-		"net/http"
-		"encoding/json"
+	"encoding/json"
+	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
-func GetUsers(w http.ResponseWriter, r *http.Request){
+func GetUsers(w http.ResponseWriter, _ *http.Request){
 	db := ConnectDb()
 	defer db.Close()
 
