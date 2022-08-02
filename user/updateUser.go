@@ -1,4 +1,4 @@
-package main
+package user
 
 import (
 	"encoding/json"
@@ -6,10 +6,11 @@ import (
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/minguu42/myapp/share"
 )
 
-func CreateUser(w http.ResponseWriter, r *http.Request){
-	db := ConnectDb()
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	db := share.ConnectDb()
 	defer db.Close()
 
 	body, err_body := ioutil.ReadAll(r.Body)
@@ -26,7 +27,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
 		panic(err_res.Error())
 	}
 
-	db.Create(&user)
+	db.Save(&user)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
