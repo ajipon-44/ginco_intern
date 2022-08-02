@@ -16,7 +16,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
 
 	defer r.Body.Close()
 
-  if err_body != nil {
+    if err_body != nil {
 		panic(err_body)
 	}
 
