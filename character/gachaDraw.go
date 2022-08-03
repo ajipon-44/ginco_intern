@@ -6,11 +6,9 @@ import (
 	"math/rand"
 	"net/http"
 	"sort"
-	"strconv"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/mux"
 	"github.com/minguu42/myapp/share"
 )
 
@@ -72,18 +70,12 @@ func GachaDraw(w http.ResponseWriter, r *http.Request) {
 
 	result := []Result{}
 
-	vars := mux.Vars(r)
-	idString := vars["id"]
-	idInt, _ := strconv.Atoi(idString)
-
 	for i := 0; i < operation.Times; i++ {
 		draw := rand.Intn(100) + 1
 		for i, boundary := range boundariesInt {
 			if draw <= boundary {
 				gachaResult := Result{characters[i].Id, characters[i].Name}
 				result = append(result, gachaResult)
-				userCharacter := UserCharacter{idInt, characters[i].Id}
-				db.Create(&userCharacter)
 				break
 			}
 		}
