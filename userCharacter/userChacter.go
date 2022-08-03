@@ -1,7 +1,7 @@
 package userCharacter
 
 type UserCharacter struct {
-	userCharacterID int
-	UsesrID         int
+	UserCharacterID int
+	UserID          int
 	CharacterID     int
 }
