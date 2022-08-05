@@ -11,6 +11,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/minguu42/myapp/share"
+	"local.packages/auth"
 )
 
 type Results struct {
@@ -32,7 +33,7 @@ type UserCharacter struct {
 }
 
 func GachaDraw(w http.ResponseWriter, r *http.Request) {
-	//id := auth.VerifyToken(w, r)
+	id := auth.VerifyToken(w, r)
 
 	db := share.ConnectDb()
 	defer db.Close()
@@ -83,8 +84,8 @@ func GachaDraw(w http.ResponseWriter, r *http.Request) {
 			if draw <= boundary {
 				gachaResult := Result{strconv.Itoa(characters[i].Id), characters[i].Name}
 				result = append(result, gachaResult)
-				// user_character := UserCharacter{UserID: strconv.Itoa(int(id.(float64))), CharacterID: strconv.Itoa(characters[i].Id)}
-				// db.Create(&user_character)
+				user_character := UserCharacter{UserID: strconv.Itoa(int(id.(float64))), CharacterID: strconv.Itoa(characters[i].Id)}
+				db.Create(&user_character)
 				break
 			}
 		}
