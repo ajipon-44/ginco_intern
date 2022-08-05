@@ -7,14 +7,16 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/minguu42/myapp/share"
+	"local.packages/auth"
 )
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	id := auth.VerifyToken(w, r)
+
 	db := share.ConnectDb()
 	defer db.Close()
 
 	body, err_body := ioutil.ReadAll(r.Body)
-
 	defer r.Body.Close()
 	if err_body != nil {
 		panic(err_body)
@@ -27,8 +29,9 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		panic(err_res.Error())
 	}
 
-	db.Save(&user)
+	db.Model(&User{}).Where("id = ?", id).Update("name", user.Name)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+
 }

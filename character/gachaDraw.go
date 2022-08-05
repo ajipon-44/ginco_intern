@@ -6,14 +6,19 @@ import (
 	"math/rand"
 	"net/http"
 	"sort"
+	"strconv"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/minguu42/myapp/share"
 )
 
+type Results struct {
+	List []Result `json:"results"`
+}
+
 type Result struct {
-	CharacterID int    `json:"characterID"`
+	CharacterID string `json:"characterID"`
 	Name        string `json:"name"`
 }
 
@@ -22,11 +27,13 @@ type operation struct {
 }
 
 type UserCharacter struct {
-	UserID      int
-	CharacterID int
+	UserID      string
+	CharacterID string
 }
 
 func GachaDraw(w http.ResponseWriter, r *http.Request) {
+	//id := auth.VerifyToken(w, r)
+
 	db := share.ConnectDb()
 	defer db.Close()
 
@@ -36,7 +43,6 @@ func GachaDraw(w http.ResponseWriter, r *http.Request) {
 	db.Find(&characters)
 
 	body, err_body := ioutil.ReadAll(r.Body)
-
 	defer r.Body.Close()
 	if err_body != nil {
 		panic(err_body)
@@ -69,19 +75,23 @@ func GachaDraw(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UnixNano())
 
 	result := []Result{}
+	results := Results{}
 
 	for i := 0; i < operation.Times; i++ {
 		draw := rand.Intn(100) + 1
 		for i, boundary := range boundariesInt {
 			if draw <= boundary {
-				gachaResult := Result{characters[i].Id, characters[i].Name}
+				gachaResult := Result{strconv.Itoa(characters[i].Id), characters[i].Name}
 				result = append(result, gachaResult)
+				// user_character := UserCharacter{UserID: strconv.Itoa(int(id.(float64))), CharacterID: strconv.Itoa(characters[i].Id)}
+				// db.Create(&user_character)
 				break
 			}
 		}
 	}
+	results.List = result
 
-	res, err_res := json.Marshal(result)
+	res, err_res := json.Marshal(results)
 	if err_res != nil {
 		panic(err_res)
 	}
