@@ -7,6 +7,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/minguu42/myapp/share"
+	"local.packages/auth"
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
@@ -29,6 +30,5 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	db.Create(&user)
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	auth.GetTokenHandler(w, r, user.Id)
 }

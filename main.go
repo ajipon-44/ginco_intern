@@ -18,7 +18,7 @@ func main() {
 	r.HandleFunc("/user/create", user.CreateUser).Methods("POST")
 	r.HandleFunc("/user/update", user.UpdateUser).Methods("PUT")
 
-	r.HandleFunc("/gacha/draw/{id:[0-9]+}", character.GachaDraw).Methods("POST")
+	r.HandleFunc("/gacha/draw", character.GachaDraw).Methods("POST")
 
 	r.HandleFunc("/character/list", userCharacter.CharacterList).Methods("GET")
 
