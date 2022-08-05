@@ -19,10 +19,8 @@ func GetTokenHandler(w http.ResponseWriter, r *http.Request, user_id int) {
 		"exp":     time.Now().Add(time.Hour * 24).Unix(),
 	}
 
-	// ヘッダーとペイロードの生成
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	// トークンに署名を付与
 	tokenString, _ := token.SignedString([]byte("SECRET_KEY"))
 	returnToken := AuthToken{}
 	returnToken.Token = tokenString
@@ -42,7 +40,6 @@ func VerifyToken(w http.ResponseWriter, r *http.Request) interface{} {
 	var Id interface{}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
