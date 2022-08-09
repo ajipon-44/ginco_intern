@@ -35,7 +35,7 @@ func CharacterList(w http.ResponseWriter, r *http.Request) {
 	var userCharacters []UserCharacter
 	var character []Character
 
-	db.Where("user_id = ?", strconv.Itoa(int(id.(float64)))).Find(&userCharacters)
+	db.Where("user_id = ?", strconv.Itoa(id)).Find(&userCharacters)
 	db.Find(&character)
 
 	result := []Result{}

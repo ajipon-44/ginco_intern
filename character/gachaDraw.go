@@ -85,7 +85,7 @@ func GachaDraw(w http.ResponseWriter, r *http.Request) {
 			if draw <= boundary {
 				gachaResult := Result{strconv.Itoa(characters[i].CharacterID), characters[i].Name}
 				result = append(result, gachaResult)
-				user_character := UserCharacter{UserID: strconv.Itoa(int(id.(float64))), CharacterID: strconv.Itoa(characters[i].Id)}
+				user_character := UserCharacter{UserID: strconv.Itoa(id), CharacterID: strconv.Itoa(characters[i].Id)}
 				db.Create(&user_character)
 				break
 			}
