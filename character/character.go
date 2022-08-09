@@ -1,7 +1,8 @@
 package character
 
 type Character struct {
-	Id   int
-	Name string
-	Rate float64
+	Id          int
+	CharacterID int `json:"characterID"`
+	Name        string
+	Rate        float64
 }

@@ -24,7 +24,8 @@ type Result struct {
 }
 
 type operation struct {
-	Times int `json:"times"`
+	Times   int `json:"times"`
+	GachaID int `json:"gachaID"`
 }
 
 type UserCharacter struct {
@@ -41,8 +42,6 @@ func GachaDraw(w http.ResponseWriter, r *http.Request) {
 	var characters []Character
 	var characterRate = []float64{}
 
-	db.Find(&characters)
-
 	body, err_body := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err_body != nil {
@@ -55,6 +54,8 @@ func GachaDraw(w http.ResponseWriter, r *http.Request) {
 	if err_json != nil {
 		panic(err_json.Error())
 	}
+
+	db.Where("gacha_id = ?", operation.GachaID).Find(&characters)
 
 	for _, c := range characters {
 		characterRate = append(characterRate, c.Rate)
@@ -82,7 +83,7 @@ func GachaDraw(w http.ResponseWriter, r *http.Request) {
 		draw := rand.Intn(100) + 1
 		for i, boundary := range boundariesInt {
 			if draw <= boundary {
-				gachaResult := Result{strconv.Itoa(characters[i].Id), characters[i].Name}
+				gachaResult := Result{strconv.Itoa(characters[i].CharacterID), characters[i].Name}
 				result = append(result, gachaResult)
 				user_character := UserCharacter{UserID: strconv.Itoa(int(id.(float64))), CharacterID: strconv.Itoa(characters[i].Id)}
 				db.Create(&user_character)
