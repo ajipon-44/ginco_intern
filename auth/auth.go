@@ -35,17 +35,16 @@ func GetTokenHandler(w http.ResponseWriter, r *http.Request, user_id int) {
 	w.Write(res)
 }
 
-func VerifyToken(w http.ResponseWriter, r *http.Request) interface{} {
+func VerifyToken(w http.ResponseWriter, r *http.Request) int {
 	tokenString := string(r.Header.Get("Authorization"))
-	var Id interface{}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		Id = token.Claims.(jwt.MapClaims)["user_id"]
 		return []byte("SECRET_KEY"), nil
 	})
+	Id := int(token.Claims.(jwt.MapClaims)["user_id"].(float64))
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		fmt.Println(claims["user_id"])

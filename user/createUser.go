@@ -18,17 +18,25 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	defer r.Body.Close()
 	if err_body != nil {
-		panic(err_body)
+		code, msg := share.StatusCode(err_body)
+		http.Error(w, msg, code)
+		return
 	}
 
 	var user User
 
 	err_res := json.Unmarshal(body, &user)
 	if err_res != nil {
-		panic(err_res.Error())
+		code, msg := share.StatusCode(err_res)
+		http.Error(w, msg, code)
+		return
 	}
 
-	db.Create(&user)
-
-	auth.GetTokenHandler(w, r, user.Id)
+	if user.Name == "" {
+		code, msg := share.StatusCode(err_res)
+		http.Error(w, msg, code)
+	} else {
+		//db.Create(&user)
+		auth.GetTokenHandler(w, r, user.Id)
+	}
 }
