@@ -45,14 +45,18 @@ func GachaDraw(w http.ResponseWriter, r *http.Request) {
 	body, err_body := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err_body != nil {
-		panic(err_body)
+		code, msg := share.StatusCode(err_body)
+		http.Error(w, msg, code)
+		return
 	}
 
 	var operation operation
 
 	err_json := json.Unmarshal(body, &operation)
 	if err_json != nil {
-		panic(err_json.Error())
+		code, msg := share.StatusCode(err_json)
+		http.Error(w, msg, code)
+		return
 	}
 
 	db.Where("gacha_id = ?", operation.GachaID).Find(&characters)
@@ -95,7 +99,9 @@ func GachaDraw(w http.ResponseWriter, r *http.Request) {
 
 	res, err_res := json.Marshal(results)
 	if err_res != nil {
-		panic(err_res)
+		code, msg := share.StatusCode(err_res)
+		http.Error(w, msg, code)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
